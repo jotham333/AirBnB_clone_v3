@@ -1,0 +1,69 @@
+from models.city import City
+from models.place import Place
+from api.v1.views import app_views
+from flask import jsonify, request, abort, make_response
+from models import storage
+from flasgger.utils import swag_from
+
+def get_place_by_id(place_id):
+    place = storage.get(Place, place_id)
+    if not place:
+        abort(404)
+    return place
+
+@app_views.route('cities/<city_id>/places', methods=['GET'])
+@swag_from('places_get.yml')
+def get_places(city_id):
+    """ Get all places in a city """
+    places = [place.to_dict() for place in storage.all(Place).values() if place.city_id == city_id]
+    return jsonify(places)
+
+@app_views.route('/places/<place_id>', methods=['GET'])
+@swag_from('places_get_id.yml')
+def get_place(place_id):
+    """ Get a place by ID """
+    place = get_place_by_id(place_id)
+    return jsonify(place.to_dict())
+
+@app_views.route('/places/<place_id>', methods=['DELETE'])
+@swag_from('places_delete_id.yml')
+def delete_place(place_id):
+    """ Delete a place by ID """
+    place = get_place_by_id(place_id)
+    storage.delete(place)
+    storage.save()
+    return make_response(jsonify({}), 200)
+
+@app_views.route('/cities/<city_id>/places', methods=['POST'])
+@swag_from('places_post.yml')
+def post_place(city_id):
+    """ Create a new place in a city """
+    city = storage.get(City, city_id)
+    if not city:
+        abort(404)
+    data = request.get_json()
+    if not data:
+        abort(400, description="Not a JSON")
+    if 'user_id' not in data:
+        abort(400, description="Missing user_id")
+    if 'name' not in data:
+        abort(400, description="Missing name")
+    data['city_id'] = city_id
+    place = Place(**data)
+    storage.new(place)
+    storage.save()
+    return make_response(jsonify(place.to_dict()), 201)
+
+@app_views.route('/places/<place_id>', methods=['PUT'])
+@swag_from('places_put_id.yml')
+def put_place(place_id):
+    """ Update a place by ID """
+    place = get_place_by_id(place_id)
+    data = request.get_json()
+    if not data:
+        abort(400, description="Not a JSON")
+    for key, value in data.items():
+        if key not in ['id', 'created_at', 'updated_at']:
+            setattr(place, key, value)
+    storage.save()
+    return make_response(jsonify(place.to_dict()), 200)
