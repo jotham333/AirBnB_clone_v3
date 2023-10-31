@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from models.amenity import Amenity
 from api.v1.views import app_views
 from flask import jsonify, request, abort, make_response

@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from models.city import City
 from models.place import Place
 from api.v1.views import app_views
