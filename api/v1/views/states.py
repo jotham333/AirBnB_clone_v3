@@ -11,21 +11,21 @@ def get_state_by_id(state_id):
         abort(404)
     return state
 
-@app_views.route('/states', methods=['GET'])
+@app_views.route('/states', methods=['GET'], strict_slashes=False)
 @swag_from('states_get.yml')
 def get_states():
     """ Get all states """
     states = [state.to_dict() for state in storage.all(State).values()]
     return jsonify(states)
 
-@app_views.route('/states/<state_id>', methods=['GET'])
+@app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 @swag_from('states_get_id.yml')
 def get_state(state_id):
     """ Get a state by ID """
     state = get_state_by_id(state_id)
     return jsonify(state.to_dict())
 
-@app_views.route('/states/<state_id>', methods=['DELETE'])
+@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
 @swag_from('states_delete_id.yml')
 def delete_state(state_id):
     """ Delete a state by ID """
@@ -34,7 +34,7 @@ def delete_state(state_id):
     storage.save()
     return make_response(jsonify({}), 200)
 
-@app_views.route('/states', methods=['POST'])
+@app_views.route('/states', methods=['POST'], strict_slashes=False)
 @swag_from('states_post.yml')
 def post_state():
     """ Create a state """
@@ -48,7 +48,7 @@ def post_state():
     storage.save()
     return make_response(jsonify(state.to_dict()), 201)
 
-@app_views.route('/states/<state_id>', methods=['PUT'])
+@app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 @swag_from('states_put_id.yml')
 def put_state(state_id):
     """ Update a state by ID """

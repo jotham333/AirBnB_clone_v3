@@ -10,21 +10,21 @@ def get_review_by_id(review_id):
         abort(404)
     return review
 
-@app_views.route('/places/<place_id>/reviews', methods=['GET'])
+@app_views.route('/places/<place_id>/reviews', methods=['GET'], strict_slashes=False)
 @swag_from('reviews_get.yml')
 def get_reviews(place_id):
     """ Get reviews for a specific place by place_id """
     reviews = [review.to_dict() for review in storage.all(Review).values() if review.place_id == place_id]
     return jsonify(reviews)
 
-@app_views.route('/reviews/<review_id>', methods=['GET'])
+@app_views.route('/reviews/<review_id>', methods=['GET'], strict_slashes=False)
 @swag_from('reviews_get_id.yml')
 def get_review(review_id):
     """ Get a review by ID """
     review = get_review_by_id(review_id)
     return jsonify(review.to_dict())
 
-@app_views.route('/reviews/<review_id>', methods=['DELETE'])
+@app_views.route('/reviews/<review_id>', methods=['DELETE'], strict_slashes=False)
 @swag_from('reviews_delete_id.yml')
 def delete_review(review_id):
     """ Delete a review by ID """
@@ -33,7 +33,7 @@ def delete_review(review_id):
     storage.save()
     return make_response(jsonify({}), 200)
 
-@app_views.route('/places/<place_id>/reviews', methods=['POST'])
+@app_views.route('/places/<place_id>/reviews', methods=['POST'], strict_slashes=False)
 @swag_from('reviews_post.yml')
 def post_review(place_id):
     """ Create a new review for a place """
@@ -53,7 +53,7 @@ def post_review(place_id):
     storage.save()
     return make_response(jsonify(review.to_dict()), 201)
 
-@app_views.route('/reviews/<review_id>', methods=['PUT'])
+@app_views.route('/reviews/<review_id>', methods=['PUT'], strict_slashes=False)
 @swag_from('reviews_put_id.yml')
 def put_review(review_id):
     """ Update a review by ID """

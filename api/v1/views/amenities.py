@@ -12,21 +12,21 @@ def get_amenity_by_id(amenity_id):
         abort(404)
     return amenity
 
-@app_views.route('/amenities', methods=['GET'])
+@app_views.route('/amenities', methods=['GET'], strict_slashes=False)
 @swag_from('amenities_get.yml')
 def get_amenities():
     """ Get all amenities """
     amenities = [amenity.to_dict() for amenity in storage.all(Amenity).values()]
     return jsonify(amenities)
 
-@app_views.route('/amenities/<amenity_id>', methods=['GET'])
+@app_views.route('/amenities/<amenity_id>', methods=['GET'], strict_slashes=False)
 @swag_from('amenities_get_id.yml')
 def get_amenity(amenity_id):
     """ Get an amenity by ID """
     amenity = get_amenity_by_id(amenity_id)
     return jsonify(amenity.to_dict())
 
-@app_views.route('/amenities/<amenity_id>', methods=['DELETE'])
+@app_views.route('/amenities/<amenity_id>', methods=['DELETE'], strict_slashes=False)
 @swag_from('amenities_delete_id.yml')
 def delete_amenity(amenity_id):
     """ Delete an amenity by ID """
@@ -35,7 +35,7 @@ def delete_amenity(amenity_id):
     storage.save()
     return make_response(jsonify({}), 200)
 
-@app_views.route('/amenities', methods=['POST'])
+@app_views.route('/amenities', methods=['POST'], strict_slashes=False)
 @swag_from('amenities_post.yml')
 def post_amenity():
     """ Create an amenity """
@@ -49,7 +49,7 @@ def post_amenity():
     storage.save()
     return make_response(jsonify(amenity.to_dict()), 201)
 
-@app_views.route('/amenities/<amenity_id>', methods=['PUT'])
+@app_views.route('/amenities/<amenity_id>', methods=['PUT'], strict_slashes=False)
 @swag_from('amenities_put_id.yml')
 def put_amenity(amenity_id):
     """ Update an amenity by ID """

@@ -12,21 +12,21 @@ def get_city_by_id(city_id):
         abort(404)
     return city
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'])
+@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
 @swag_from('cities_get.yml')
 def get_cities(state_id):
     """ Get all cities in a state """
     cities = [city.to_dict() for city in storage.all(City).values() if city.state_id == state_id]
     return jsonify(cities)
 
-@app_views.route('/cities/<city_id>', methods=['GET'])
+@app_views.route('/cities/<city_id>', methods=['GET'], strict_slashes=False)
 @swag_from('cities_get_id.yml')
 def get_city(city_id):
     """ Get a city by id """
     city = get_city_by_id(city_id)
     return jsonify(city.to_dict())
 
-@app_views.route('/cities/<city_id>', methods=['DELETE'])
+@app_views.route('/cities/<city_id>', methods=['DELETE'], strict_slashes=False)
 @swag_from('cities_delete_id.yml')
 def delete_city(city_id):
     """ Delete a city by id """
@@ -35,7 +35,7 @@ def delete_city(city_id):
     storage.save()
     return make_response(jsonify({}), 200)
 
-@app_views.route('/states/<state_id>/cities', methods=['POST'])
+@app_views.route('/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
 @swag_from('cities_post.yml')
 def post_city(state_id):
     """ Create a new city in a state """
@@ -53,7 +53,7 @@ def post_city(state_id):
     storage.save()
     return make_response(jsonify(city.to_dict()), 201)
 
-@app_views.route('/cities/<city_id>', methods=['PUT'])
+@app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
 @swag_from('cities_put_id.yml')
 def put_city(city_id):
     """ Update a city by id """

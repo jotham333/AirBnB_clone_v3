@@ -14,14 +14,14 @@ def get_place(place_id):
         abort(404)
     return place
 
-@app_views.route('/places/<place_id>/amenities', methods=['GET'])
+@app_views.route('/places/<place_id>/amenities', methods=['GET'], strict_slashes=False)
 @swag_from('places_amenities.yml')
 def get_place_amenities(place_id):
     """ Get all amenities for a place """
     place = get_place(place_id)
     return jsonify([amenity.to_dict() for amenity in place.amenities])
 
-@app_views.route('/places/<place_id>/amenities/<amenity_id>', methods=['DELETE'])
+@app_views.route('/places/<place_id>/amenities/<amenity_id>', methods=['DELETE'], strict_slashes=False)
 @swag_from('places_amenities_delete.yml')
 def delete_place_amenity(place_id, amenity_id):
     """ Delete an amenity from a place """
@@ -33,7 +33,7 @@ def delete_place_amenity(place_id, amenity_id):
     storage.save()
     return make_response(jsonify({}), 200)
 
-@app_views.route('/places/<place_id>/amenities/<amenity_id>', methods=['POST'])
+@app_views.route('/places/<place_id>/amenities/<amenity_id>', methods=['POST'], strict_slashes=False)
 @swag_from('places_amenities_post.yml')
 def post_place_amenity(place_id, amenity_id):
     """ Add an amenity to a place """
