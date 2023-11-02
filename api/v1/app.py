@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+""" AirBnB Clone API """
+
 from os import environ
 from flask import Flask, jsonify
 from models import storage

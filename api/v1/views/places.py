@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+""" Place Module for HBNB project """
+
 from models.city import City
 from models.place import Place
 from api.v1.views import app_views

@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+""" State Module for HBNB project """
+
 from models.state import State
 from api.v1.views import app_views
 from flask import jsonify, request, abort, make_response

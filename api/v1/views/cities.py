@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+""" City Views """
+
 from models.city import City
 from api.v1.views import app_views
 from flask import jsonify, request, abort, make_response

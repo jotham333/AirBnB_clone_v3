@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+""" Module of Amenity views """
+
 """ Objects that handle all default RESTful API actions for Place - Amenity """
 from models.place import Place
 from models.amenity import Amenity

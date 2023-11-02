@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" Amenity views """
 
 from models.amenity import Amenity
 from api.v1.views import app_views
