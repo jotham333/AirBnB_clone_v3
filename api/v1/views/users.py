@@ -5,7 +5,6 @@ from models.user import User
 from api.v1.views import app_views
 from flask import jsonify, request, abort, make_response
 from models import storage
-from flasgger.utils import swag_from
 
 def get_user_by_id(user_id):
     user = storage.get(User, user_id)
@@ -14,21 +13,18 @@ def get_user_by_id(user_id):
     return user
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
-@swag_from('users_get.yml')
 def get_users():
     """ Get all users """
     users = [user.to_dict() for user in storage.all(User).values()]
     return jsonify(users)
 
 @app_views.route('/users/<user_id>', methods=['GET'], strict_slashes=False)
-@swag_from('users_get_id.yml')
 def get_user(user_id):
     """ Get a user by ID """
     user = get_user_by_id(user_id)
     return jsonify(user.to_dict())
 
 @app_views.route('/users/<user_id>', methods=['DELETE'], strict_slashes=False)
-@swag_from('users_delete_id.yml')
 def delete_user(user_id):
     """ Delete a user by ID """
     user = get_user_by_id(user_id)
@@ -37,7 +33,6 @@ def delete_user(user_id):
     return make_response(jsonify({}), 200)
 
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
-@swag_from('users_post.yml')
 def post_user():
     """ Create a user """
     data = request.get_json()
@@ -51,7 +46,6 @@ def post_user():
     return make_response(jsonify(user.to_dict()), 201)
 
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
-@swag_from('users_put_id.yml')
 def put_user(user_id):
     """ Update a user by ID """
     user = get_user_by_id(user_id)

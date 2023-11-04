@@ -5,7 +5,6 @@ from models.review import Review
 from api.v1.views import app_views
 from flask import jsonify, request, abort, make_response
 from models import storage
-from flasgger.utils import swag_from
 
 def get_review_by_id(review_id):
     review = storage.get(Review, review_id)
@@ -14,21 +13,18 @@ def get_review_by_id(review_id):
     return review
 
 @app_views.route('/places/<place_id>/reviews', methods=['GET'], strict_slashes=False)
-@swag_from('reviews_get.yml')
 def get_reviews(place_id):
     """ Get reviews for a specific place by place_id """
     reviews = [review.to_dict() for review in storage.all(Review).values() if review.place_id == place_id]
     return jsonify(reviews)
 
 @app_views.route('/reviews/<review_id>', methods=['GET'], strict_slashes=False)
-@swag_from('reviews_get_id.yml')
 def get_review(review_id):
     """ Get a review by ID """
     review = get_review_by_id(review_id)
     return jsonify(review.to_dict())
 
 @app_views.route('/reviews/<review_id>', methods=['DELETE'], strict_slashes=False)
-@swag_from('reviews_delete_id.yml')
 def delete_review(review_id):
     """ Delete a review by ID """
     review = get_review_by_id(review_id)
@@ -37,7 +33,6 @@ def delete_review(review_id):
     return make_response(jsonify({}), 200)
 
 @app_views.route('/places/<place_id>/reviews', methods=['POST'], strict_slashes=False)
-@swag_from('reviews_post.yml')
 def post_review(place_id):
     """ Create a new review for a place """
     place = storage.get('Place', place_id)
@@ -57,7 +52,6 @@ def post_review(place_id):
     return make_response(jsonify(review.to_dict()), 201)
 
 @app_views.route('/reviews/<review_id>', methods=['PUT'], strict_slashes=False)
-@swag_from('reviews_put_id.yml')
 def put_review(review_id):
     """ Update a review by ID """
     review = get_review_by_id(review_id)
